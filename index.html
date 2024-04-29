@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  body {
+    background-color: #00001a;
+    color: #fff;
+    font-size: 24px;
+  }
+
+  input,
+  select,
+  button,
+  label {
+    font-size: 24px;
+    padding: 5px;
+  }
+
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .btn {
+    margin-top: 20px;
+    flex-direction: row;
+    gap: 15px;
+  }
+
+  .result {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+    width: 800px;
+    font-size: 48px;
+    font-style: italic;
+    text-align: center;
+  }
+</style>
+
+<body>
+  <div class="container">
+    <h1>Ficha do Herói</h1>
+    <div class="content">
+      <label>Nome do Herói</label>
+      <input type="text" id="hr_heroi" Value="Dave " />
+    </div>
+    <div class="content">
+      <label>Quanto de experiência o herói tem?</label>
+      <input type="number" id="hr_xp" min="1" maxlength="6" value=200>
+    </div>
+    <div class="content">
+      <label>Qual a classe do herói?</label>
+      <select id="hr_class">
+        <option disabled value="">Selecione a classe</option>
+        <option selected value="Mago">Mago</option>
+        <option value="Guerreiro">Guerreriro</option>
+        <option value="Guerreiro">Arqueiro</option>
+        <option value="Tank">Tank</option>
+        <option value="Curandeiro">Curandeiro</option>
+        <option value="Ladino">Ladino</option>
+        <option value="Necromancer">Necromancer</option>
+      </select>
+    </div>
+    <div class="content btn">
+      <button onclick="cadastrarHeroi()">Cadastrar</button>
+    </div>
+    <div class="content result">
+
+    </div>
+  </div>
+  <script>
+
+    const xpClassificacao = [
+      { min: 0, max: 1000, classificacao: "Ferro" },
+      { min: 1001, max: 2000, classificacao: "Bronze" },
+      { min: 2001, max: 5000, classificacao: "Prata" },
+      { min: 5001, max: 7000, classificacao: "Ouro" },
+      { min: 7001, max: 8000, classificacao: "Platina" },
+      { min: 8001, max: 9000, classificacao: "Ascendente" },
+      { min: 9001, max: 10000, classificacao: "Imortal" },
+      { min: 10001, max: "-", classificacao: "Radiante" }
+    ]
+
+    let hr_nome = document.querySelector('#hr_heroi')
+    let hr_xpe = document.querySelector('#hr_xp')
+    let hr_classe = document.querySelector('#hr_class')
+    let retorno = document.querySelector(`.result`)
+
+    const getNivel = () => {
+      for (let i = 0; i < xpClassificacao.length; i++) {
+        if (i < xpClassificacao.length - 1) {
+          if ((xpClassificacao[i].min <= parseInt(hr_xpe.value)) & (xpClassificacao[i].max >= parseInt(hr_xpe.value))) {
+            return xpClassificacao[i].classificacao
+          }
+        } else {
+          return xpClassificacao[i].classificacao
+        }
+      }
+    }
+
+    const validarCampos = () => {
+      if (hr_nome.value == "") { return { status: false, msg: "Insira o Nome." } }
+      if (hr_xpe.value == "") { return { status: false, msg: "Informe a experiência." } }
+      if (hr_classe.value == "") { return { status: false, msg: "Informe a classe" } }
+      return true
+    }
+
+    const cadastrarHeroi = () => {
+      let nivel = getNivel()
+      if (validarCampos() === true) {
+        retorno.innerHTML = `O Herói ${hr_nome.value} é um exímio ${hr_classe.value} e está no nível ${nivel}.`
+      } else {
+        let res = validarCampos()
+        res.status ? "" : alert(res.msg)
+      }
+    }
+
+  </script>
+</body>
+
+</html>
